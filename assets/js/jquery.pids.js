@@ -45,6 +45,7 @@ jQuery(document).ready(function($) {
  
   function checkPBSLogin() {
     user = Cookies.getJSON('pbs_passport_userinfo');
+        //console.log('user = ' + user);
     if ( typeof(user) !== "undefined" && typeof(user.membership_info) !== "undefined") {
         updateLoginVisuals(user);
       } else {
@@ -60,6 +61,7 @@ jQuery(document).ready(function($) {
       dataType: 'json',
       success: function(response) {
         user = response;
+            //console.log('retrieve login user: ' + user);
         updateLoginVisuals(user);
       }
     });
@@ -67,7 +69,8 @@ jQuery(document).ready(function($) {
 
   //function updateLoginVisuals(user){
   updateLoginVisuals = function(user) {
-  
+        //console.log('update visuals:');
+        //console.log('user = ' + user);
     if (user){
       // if somehow still on loginform after logging in, redirect to userinfo page
       if (window.location == loginform) { window.location = userinfolink; }
@@ -87,7 +90,7 @@ jQuery(document).ready(function($) {
      
       $('.pbs_passport_authenticate div.messages').html(welcomestring);
 	  
-	  if (user.thumbnail_URL) { $('.pbs_passport_authenticate div.messages').append("<img src=" + user.thumbnail_URL + " />");}
+	  //if (user.thumbnail_URL) { $('.pbs_passport_authenticate div.messages').append("<img src=" + user.thumbnail_URL + " />");}
       
 	  $('.pbs_passport_authenticate button.launch').addClass('logout');
       $('.pbs_passport_authenticate button.launch').text('Sign out');
@@ -154,6 +157,7 @@ jQuery(document).ready(function($) {
      /* optin challenge */
 	$( "#passport-confirm-optin" ).click(function() {
 		if ($('input#pbsoauth_optin').prop('checked')) {
+      console.log('opted in user: ' + user);
 			if (user) {
 				// if user already logged in
 				var memberid = getQueryStringParamPBS('membership_id');

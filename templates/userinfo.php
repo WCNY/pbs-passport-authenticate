@@ -2,10 +2,10 @@
 $defaults = get_option('pbs_passport_authenticate');
 $passport = new PBS_Passport_Authenticate(dirname(__FILE__));
 
-$pluginImageDir = $passport->assets_url . 'img';
-$station_nice_name = $defaults['station_nice_name'];
 $laas_client = $passport->get_laas_client();
 $userinfo = $laas_client->check_pbs_login();
+$pluginImageDir = $passport->assets_url . 'img';
+$station_nice_name = $defaults['station_nice_name'];
 if (empty($userinfo['first_name'])) {
   // just in case, log them out, maybe they've got a bad cookie
   $laas_client->logout();
@@ -31,8 +31,9 @@ get_header();
   echo '<img src="' . $defaults['station_passport_logo'] . '" />'; 
 }
 
+echo "<div class='column boxed'>";
 echo "<h3>USER STATUS</h3>";
-echo "<div class='passport-username'>" . $userinfo['first_name'] . " " . $userinfo['last_name'] . "</div>";
+echo "<div class='passport-username'>Username: " . $userinfo['first_name'] . " " . $userinfo['last_name'] . "</div>";
 
   //echo print_r($userinfo['membership_info']);    
 
@@ -47,21 +48,21 @@ echo "<div class='passport-username'>" . $userinfo['first_name'] . " " . $userin
 if ( !empty($userinfo['membership_info']['offer']) && $userinfo['membership_info']['status'] == "On") {
 	echo "<p class='passport-status'>$station_nice_name Passport <i class='fa fa-check-circle passport-green'></i></p>";
 	if (!empty($watch_url)) {echo "<p><a href='$watch_url' class='passport-button'>Watch Programs</a></p>";}
+	echo "</div> <!-- /.column boxed -->";
 }
 
 /* not an active member */
 elseif ( empty($userinfo['membership_info']['offer']) && $userinfo['membership_info']['status'] == "Off") {
 	$active_url = site_url('pbsoauth/activate');
-	echo "<div class='login-wrap cf'><ul>";
-	echo "<li><p class='passport-status'>$station_nice_name Passport <span class='passport-exclamation'><i class='fa fa-exclamation'></i></span></p></li>";
+	echo "<ul><li><p class='passport-status'>$station_nice_name Passport <span class='passport-exclamation'><i class='fa fa-exclamation'></i></span></p></li>";
 	
 	
 	
 	echo "<li class='passport-not-setup'><p>Your $station_nice_name Passport account is not setup.
 $station_nice_name Passport is a benefit for eligible members of $station_nice_name.</p>
 
-<p>If you are a member. please choose an option below. If you are not a member, use the \"Become a Member\" button.</p> </li>";
-	
+<p>If you are a member. please choose an option below. If you are not a member, use the \"Become a Member\" button.</p> </li></ul></div> <!-- /.column boxed --><div class='column'><div class='login-wrap cf'><ul>";
+
 	
 	
 	echo "<li class='service-section-label'>I'm a member <strong>with</strong> an activation code</li>";
@@ -69,13 +70,13 @@ $station_nice_name Passport is a benefit for eligible members of $station_nice_n
 	if (!empty($join_url)) { 
 		
 		echo "<li class='service-section-label'>I'm a member <strong>without</strong> an activation code</li>";
-		echo "<li class='service-login-link accountsetep'><a href='". site_url('pbsoauth/alreadymember') ."' class='passport-button'>Request Account Setup</a></li>";
+		//echo "<li class='service-login-link accountsetup'><a href='". site_url('pbsoauth/alreadymember') ."' class='passport-button'>Request Account Setup</a></li>";
 	 	
 		echo "<li class='service-section-label'>Not a Member?</li>";
 		echo "<li class='service-login-link becomemember'><a href='$join_url' class='passport-button gray'>Become a Member</a></li>";
 
 	}
-	echo "</ul></div>";
+	echo "</ul></div></div> <!-- /.column -->";
 }
 
 /* expired member */

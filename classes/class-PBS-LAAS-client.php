@@ -85,7 +85,7 @@ class PBS_LAAS_Client {
     // cookie stuff
     $this->tokeninfo_cookiename = $args['tokeninfo_cookiename'];
     $this->userinfo_cookiename = $args['userinfo_cookiename'];
-    $this->domain = ($_SERVER['HTTP_HOST'] != 'localhost') ? $_SERVER['HTTP_HOST'] : false;
+    $this->domain = ($_SERVER['HTTP_HOST'] != 'test.wcny:8890') ? $_SERVER['HTTP_HOST'] : 'test.wcny';
 
     // encryption stuff
     $this->cryptkey = $args['cryptkey'];
@@ -137,6 +137,7 @@ class PBS_LAAS_Client {
     $this->rememberme = $rememberme;
 
     $tokeninfo = $this->get_code_response($code);
+
     if (! isset($tokeninfo["access_token"]) ) {
       $tokeninfo['messages'] = 'broke on code response';
       return $tokeninfo;
@@ -145,19 +146,21 @@ class PBS_LAAS_Client {
     $tokeninfo = $this->update_pbs_tokeninfo($tokeninfo);
      
     $access_token = $tokeninfo['access_token'];
+
     if (! isset($tokeninfo["access_token"]) ) {
       return $tokeninfo;
     }
 
-    $this->save_encrypted_tokeninfo($tokeninfo);
+    $cookie_set = $this->save_encrypted_tokeninfo($tokeninfo);
 
     $userinfo = $this->get_latest_pbs_userinfo($access_token);
+
     if (! isset($userinfo["pid"])){
       $tokeninfo['messages'] = 'broke on getting userinfo';
       $tokeninfo['userinfodata'] = $userinfo;
       return $tokeninfo;
     } 
-    
+
     return $userinfo;
 
   }
@@ -264,6 +267,7 @@ class PBS_LAAS_Client {
     $errors = curl_error($ch);
     curl_close($ch);
     $code_response = json_decode($response_json, true);
+
     if (isset($code_response["access_token"])){
       return $code_response;
     } else { 
@@ -279,6 +283,7 @@ class PBS_LAAS_Client {
 
 
   public function validate_pbs_access_token($access_token = ''){
+
     // this function hits the tokeninfo endpoint and checks its validity
 
     /* NOTE:  the token-info endpoint has been disabled by PBS.  Instead we will see if we can successfully get userinfo.
@@ -301,11 +306,12 @@ class PBS_LAAS_Client {
     * new lame hack follows
     */
     $userinfo = $this->get_latest_pbs_userinfo($access_token);
+
     if (! isset($userinfo["pid"])){
       // this will be error info
       return $userinfo;
     }
-    return $access_token;
+    return $userinfo;
   }
 
   public function generate_pbs_access_token_from_refresh_token($refresh_token =''){
@@ -375,7 +381,6 @@ class PBS_LAAS_Client {
 
 
   private function retrieve_encrypted_tokeninfo() {
-
     // check for encrypted tokeninfo in cookie
     if (isset($_COOKIE[$this->tokeninfo_cookiename])){
        $tokeninfo = $_COOKIE[$this->tokeninfo_cookiename];
@@ -405,8 +410,10 @@ class PBS_LAAS_Client {
     $tokeninfo = $encrypted;
 
     if ($this->rememberme) {
+
       // save encrypted tokeninfo in cookie if it exists or the user checked the remember me box
       return setcookie($this->tokeninfo_cookiename, $tokeninfo, strtotime("+1 year"), "/", $this->domain, false, true);
+
     } else {
       // remember me is only false at this point if the checkbox is user-cleared, so clear out that cookie if it was previously set
       if (isset($_COOKIE[$this->tokeninfo_cookiename])) { 
@@ -442,10 +449,10 @@ class PBS_LAAS_Client {
       $tokeninfo = $newtokeninfo;
 
     }
-
     // validate the access token on general priniciple
     $validate = $this->validate_pbs_access_token($tokeninfo['access_token']);
-    if (! isset($validate['access_token'])){
+
+    if (! isset($validate['pid'])){
       return $validate;
     }
     // calculate the expiration date and add to tokeninfo array if not previously set
@@ -502,7 +509,6 @@ class PBS_LAAS_Client {
   private function store_pbs_userinfo($userinfo) {
     if (isset($userinfo['pid'])){
       //  store profile info in a cookie
-      //error_log('userinfo is ' . json_encode($userinfo) );
       $userinfo_clean = array(
         'first_name' => $userinfo['first_name'],
         'last_name' => $userinfo['last_name'],

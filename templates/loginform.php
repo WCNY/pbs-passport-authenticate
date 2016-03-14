@@ -10,6 +10,7 @@ $station_nice_name = $defaults['station_nice_name'];
 $laas_client = $passport->get_laas_client();
 $userinfo = $laas_client->check_pbs_login();
 $membership_id = (!empty($_REQUEST['membership_id']) ? $_REQUEST['membership_id'] : false);
+
 if ($membership_id) {
   $mvault_client = $passport->get_mvault_client();
   $mvaultinfo = $mvault_client->get_membership($membership_id);
@@ -26,8 +27,23 @@ if ($membership_id) {
   }
 }
 
+if(isset($_COOKIE['pbs_passport_userinfo'])) {
+    $passport_json = stripslashes($_COOKIE['pbs_passport_userinfo']);
+      $passport_info = json_decode($passport_json);
+      $mem_stat = $passport_info->membership_info->status;
+}
+// Check for login & redirect to referring url
+if ($userinfo['first_name'] && mem_stat == "On") {
+  console('already logged in');
+  //wp_redirect(site_url('/membersite/'));
+  exit();
+}
+
 get_header();
 ?>
+<div class="container p_gateway">
+<div class="body-fade">
+      
 <div class='pbs-passport-authenticate-wrap <?php if (empty($userinfo) && !$membership_id) {echo "wide"; }?> cf'>
 <div class="pbs-passport-authenticate login-block">
 <div class='passport-middle'>
@@ -37,8 +53,8 @@ get_header();
 }
 if ($membership_id){
   // this is an activation
-  //echo '<h2>Welcome ' . $mvaultinfo['first_name'] . ' ' . $mvaultinfo['last_name'] . '</h2>'; 
-  echo '<h2>Welcome!</h2>';
+  echo '<h2>Welcome ' . $mvaultinfo['first_name'] . ' ' . $mvaultinfo['last_name'] . '</h2>'; 
+  //echo '<h2>Welcome!</h2>';
 
 	// opt-in challenge
 	echo '
@@ -50,7 +66,7 @@ if ($membership_id){
 		<p class="passport-small">If you do not agree to allow PBS and ' . $defaults['station_nice_name'] . ' to share your viewing history with each other and their service
 providers, please stop and <a href="/about/contact/?1i=passport">contact us</a>.</p>
 		<p class="passport-small">Please see our <a href="/about/privacy-policy/">Privacy Policy</a> and <a href="/about/terms-of-service/">Terms of Use</a> for more information.</p>
-</div>
+    </div>
 	';
 	// end opt in challenge
 
@@ -65,9 +81,9 @@ providers, please stop and <a href="/about/contact/?1i=passport">contact us</a>.
  
  </div>
  <div class='login-wrap <?php if ($membership_id){ echo "add-login-fields hide"; } ?> cf'>
+<?php if (empty($userinfo)) { ?>
 <ul class='float <?php if ($membership_id){ echo "single-column";} ?>'>
-<?php if (empty($userinfo)) {
-  if (!$membership_id){ ?>
+  <?php if (!$membership_id){ ?>
 <li class = "service-section-label">Already Activated? Please sign in below</li>
 <?php } ?>
 <li class = "service-login-link google"><a href="<?php echo($links['google']); ?>"><img src="<?php echo $pluginImageDir; ?>/button-google.png" alt="Login using Google"/></a></li>
@@ -76,16 +92,16 @@ providers, please stop and <a href="/about/contact/?1i=passport">contact us</a>.
 <li class="service-stay-logged-in"><input type="checkbox" id="pbsoauth_rememberme" name="pbsoauth_rememberme" value="true" checked /> Keep me logged in on this device</li>
 </ul>
 
-<ul class='float'>
 <?php }
 if (!$membership_id){ ?>
+<ul class='float right <?php if (!empty($userinfo)){ echo "single-column";} ?>'>
 <li class='service-section-label'>Not Activated Yet?</li>
 <li class = "service-login-link activate"><a href="<?php echo site_url('pbsoauth/activate/'); ?>" class='passport-button'><span class='logo-button'>&nbsp;</span>Activate Now</a></li>
 <?php 
 if (!empty($defaults['join_url'])) {
 ?>
 <li class='service-section-label'>Not a Member?</li>
-<li class = "service-login-link becomemember"><a href="<?php echo $defaults['join_url']; ?>"  class='passport-button red'>Donate Now</a></li>
+<li class = "service-login-link becomemember"><a href="<?php echo $defaults['join_url']; ?>"  class='passport-button red'>Donate Now <i class="fa fa-chevron-right"></i></a></li>
 <?php }
 }
 echo "</ul>";
@@ -100,4 +116,7 @@ echo "<p class='passport-help-text'><i class='fa fa-info-circle'></i> " . $defau
 </div>
 </div>
 </div>
+
+</div> <!-- /.body-fade -->
+</div> <!-- /.container -->
 <?php get_footer();

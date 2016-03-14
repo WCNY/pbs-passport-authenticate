@@ -21,10 +21,11 @@ $passport = new PBS_Passport_Authenticate(dirname(__FILE__));
 
 $laas_client = $passport->get_laas_client();
 
-
 if (isset($_GET["state"])){
   $state=($_GET["state"]);
 }
+
+
 
 // this WILL be JWT, for now its just the membership_id
 // $jwt = $passport->jwt_decode($state);
@@ -40,20 +41,26 @@ $nonce = false;
 
 
 $errors = array();
+
+
 if (isset($_GET["code"])){
   $code = $_GET["code"];
   $userinfo = $laas_client->authenticate($code, $rememberme, $nonce);
 }
 
+
 // now we either have userinfo or null.
+
 if (isset($userinfo["pid"])){
 
   $pbs_uid = $userinfo["pid"];
 
   // now we work with the mvault
 
+
   $mvault_client = new PBS_MVault_Client($defaults['mvault_client_id'], $defaults['mvault_client_secret'],$defaults['mvault_endpoint'], $defaults['station_call_letters']);
   $mvaultinfo = array();
+
   if ($membership_id) {
     // this is an activation!
     $mvaultinfo = $mvault_client->get_membership($membership_id);
@@ -63,12 +70,19 @@ if (isset($userinfo["pid"])){
   }
 }
 
+
 $login_referrer = site_url();
 
-if (!empty($_COOKIE["pbsoauth_login_referrer"])){
-  $login_referrer = $_COOKIE["pbsoauth_login_referrer"];
+if($defaults['after_login_url']) {
+  $login_referrer = $defaults['after_login_url'];
+} else {
+  if (!empty($_COOKIE["pbsoauth_login_referrer"])){
+    $login_referrer = $_COOKIE["pbsoauth_login_referrer"];
+  }
 }
 
+$login_status = $laas_client->check_pbs_login();
+error_log('-------------');
 
 wp_redirect($login_referrer);
 exit();

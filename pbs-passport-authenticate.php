@@ -17,9 +17,9 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 // pre-define pluggable functions if needed
-if (file_exists('pluggable.php')) {
+//if (file_exists('pluggable.php')) {
   require_once('pluggable.php');
-}
+//}
 
 
 // Include plugin class files

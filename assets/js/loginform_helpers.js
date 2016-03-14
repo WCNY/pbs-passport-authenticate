@@ -7,7 +7,7 @@ jQuery(document).ready(function($) {
     } else {
       rememberme = 'false';
     }
-    console.log(rememberme);
+      //console.log(rememberme);
     document.cookie='pbsoauth_rememberme=' + rememberme + ';domain=' + window.location.hostname + ';path=/';
   }
 
