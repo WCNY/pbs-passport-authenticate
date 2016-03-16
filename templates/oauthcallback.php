@@ -31,10 +31,18 @@ if (isset($_GET["state"])){
 // $jwt = $passport->jwt_decode($state);
 $membership_id = (!empty($state) ? $state : false);
 
+/*echo "membership id:<br/>";
+var_dump($membership_id);
+echo "<br/>";*/
+
 $rememberme = false;
 if (!empty($_COOKIE["pbsoauth_rememberme"])) {
   $rememberme = $_COOKIE["pbsoauth_rememberme"];
 }
+
+/*echo "rememberme: ";
+var_dump($rememberme);
+echo "<br/>";*/
 
 // nonce is going to be in the jwt
 $nonce = false;
@@ -47,6 +55,9 @@ if (isset($_GET["code"])){
   $code = $_GET["code"];
   $userinfo = $laas_client->authenticate($code, $rememberme, $nonce);
 }
+/*echo "userinfo:<br/><pre>";
+var_dump($userinfo);
+echo "</pre><br/>";*/
 
 
 // now we either have userinfo or null.
@@ -82,7 +93,6 @@ if($defaults['after_login_url']) {
 }
 
 $login_status = $laas_client->check_pbs_login();
-error_log('-------------');
 
 wp_redirect($login_referrer);
 exit();
