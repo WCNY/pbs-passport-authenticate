@@ -66,7 +66,7 @@ if ($activation_token){
         exit();
       }
       // if NOT logged in, redirect to the login page so they can activate there
-      $loginuri = site_url('pbsoauth/loginform') . '?membership_id=' . $mvaultinfo['membership_id'];
+      $loginuri = site_url('pbsoauth/loginform', 'https') . '?membership_id=' . $mvaultinfo['membership_id'];
       wp_redirect($loginuri);
       exit();
     }
@@ -109,7 +109,7 @@ if ($activation_token){
   <p>If you don't have an email from us, <a href="<?php echo site_url('pbsoauth/alreadymember/'); ?>">please click here</a>.</p>
   <?php } ?>
   <h3>I already activated.</h3>
-  <p>If you have already activated your <?php echo $station_nice_name; ?> Passport account, <a href="<?php echo site_url('pbsoauth/loginform/'); ?>" >click here to sign in</a>.</p>
+  <p>If you have already activated your <?php echo $station_nice_name; ?> Passport account, <a href="<?php echo site_url('pbsoauth/loginform/', 'https'); ?>" >click here to sign in</a>.</p>
   <h3>Not a member?</h3>
   <p>If you are not a current member, <a href="<?php echo $defaults['join_url']; ?>">click here to join.</a></p>
   <p>&nbsp;</p>

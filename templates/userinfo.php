@@ -10,7 +10,7 @@ if (empty($userinfo['first_name'])) {
   // just in case, log them out, maybe they've got a bad cookie
   $laas_client->logout();
   // not logged in, redirect to loginform
-  wp_redirect(site_url('pbsoauth/loginform'));
+  wp_redirect(site_url('pbsoauth/loginform', 'https'));
   exit();
 }
 $mvault_client = new PBS_MVault_Client($defaults['mvault_client_id'], $defaults['mvault_client_secret'],$defaults['mvault_endpoint'], $defaults['station_call_letters']);
@@ -53,7 +53,7 @@ if ( !empty($userinfo['membership_info']['offer']) && $userinfo['membership_info
 
 /* not an active member */
 elseif ( empty($userinfo['membership_info']['offer']) && $userinfo['membership_info']['status'] == "Off") {
-	$active_url = site_url('pbsoauth/activate');
+	$active_url = site_url('pbsoauth/activate', 'https');
 	echo "<ul><li><p class='passport-status'>$station_nice_name Passport <span class='passport-exclamation'><i class='fa fa-exclamation'></i></span></p></li>";
 	
 	
@@ -69,8 +69,8 @@ $station_nice_name Passport is a benefit for eligible members of $station_nice_n
 	echo "<li class='service-login-link activate'><a href='$active_url' class='passport-button'><span class='logo-button'>&nbsp;</span>Activate Account</a></li>";
 	if (!empty($join_url)) { 
 		
-		echo "<li class='service-section-label'>I'm a member <strong>without</strong> an activation code</li>";
-		//echo "<li class='service-login-link accountsetup'><a href='". site_url('pbsoauth/alreadymember') ."' class='passport-button'>Request Account Setup</a></li>";
+		//echo "<li class='service-section-label'>I'm a member <strong>without</strong> an activation code</li>";
+		//echo "<li class='service-login-link accountsetup'><a href='". site_url('pbsoauth/alreadymember', 'https') ."' class='passport-button'>Request Account Setup</a></li>";
 	 	
 		echo "<li class='service-section-label'>Not a Member?</li>";
 		echo "<li class='service-login-link becomemember'><a href='$join_url' class='passport-button gray'>Become a Member</a></li>";

@@ -80,12 +80,12 @@ class PBS_Passport_Authenticate {
       $args = $allowed_args;
     }
     $render = $args['render'];
-    $args['laas_authenticate_script'] = site_url('pbsoauth/authenticate/');
-    $args['loginform'] = site_url('pbsoauth/loginform/');
+    $args['laas_authenticate_script'] = site_url('pbsoauth/authenticate/', 'https');
+    $args['loginform'] = site_url('pbsoauth/loginform/', 'https');
     $defaults = get_option('pbs_passport_authenticate');
     $args['joinurl'] = $defaults['join_url'];
-    $args['activatelink'] =  site_url('pbsoauth/activate/');
-    $args['userinfolink'] =  site_url('pbsoauth/userinfo/');
+    $args['activatelink'] =  site_url('pbsoauth/activate/', 'https');
+    $args['userinfolink'] =  site_url('pbsoauth/userinfo/', 'https');
     $args['station_call_letters_lc'] = strtolower($defaults['station_call_letters']);
     $json_args = json_encode($args);
     $button = '<div class="pbs_passport_authenticate"><button class="launch">' . $args['login_text'] .  '</button><div class="messages"></div></div>';
@@ -111,7 +111,7 @@ class PBS_Passport_Authenticate {
   public function get_oauth_links(){
     $defaults = get_option('pbs_passport_authenticate');
     $oauthroot = $defaults['oauth2_endpoint'];
-    $redirect_uri = site_url('pbsoauth/callback/');
+    $redirect_uri = site_url('pbsoauth/callback/', 'https');
     $client_id = $defaults['laas_client_id'];
     
     $return = array();
@@ -128,7 +128,7 @@ class PBS_Passport_Authenticate {
       'client_id' => $defaults['laas_client_id'],
       'client_secret' => $defaults['laas_client_secret'],
       'oauthroot' => $defaults['oauth2_endpoint'],
-      'redirect_uri' => site_url('/pbsoauth/callback/'),
+      'redirect_uri' => site_url('/pbsoauth/callback/', 'https'),
       'tokeninfo_cookiename' => $defaults['tokeninfo_cookiename'],
       'userinfo_cookiename' => 'pbs_passport_userinfo',
       'cryptkey' => $defaults['cryptkey']

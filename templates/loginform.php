@@ -32,10 +32,11 @@ if(isset($_COOKIE['pbs_passport_userinfo'])) {
       $passport_info = json_decode($passport_json);
       $mem_stat = $passport_info->membership_info->status;
 }
+
 // Check for login & redirect to referring url
-if ($userinfo['first_name'] && mem_stat == "On") {
+if ($userinfo['first_name'] && $mem_stat == "On") {
   console('already logged in');
-  //wp_redirect(site_url('/membersite/'));
+  wp_redirect(site_url('/membersite/'));
   exit();
 }
 
@@ -96,7 +97,7 @@ providers, please stop and <a href="/about/contact/?1i=passport">contact us</a>.
 if (!$membership_id){ ?>
 <ul class='float right <?php if (!empty($userinfo)){ echo "single-column";} ?>'>
 <li class='service-section-label'>Not Activated Yet?</li>
-<li class = "service-login-link activate"><a href="<?php echo site_url('pbsoauth/activate/'); ?>" class='passport-button'><span class='logo-button'>&nbsp;</span>Activate Now</a></li>
+<li class = "service-login-link activate"><a href="<?php echo site_url('pbsoauth/activate/', 'https'); ?>" class='passport-button'><span class='logo-button'>&nbsp;</span>Activate Now</a></li>
 <?php 
 if (!empty($defaults['join_url'])) {
 ?>
