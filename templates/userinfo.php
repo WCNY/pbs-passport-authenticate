@@ -21,6 +21,7 @@ if (isset ($mvaultinfo["membership_id"])) {
   $userinfo["membership_info"] = $mvaultinfo;
   $userinfo = $laas_client->validate_and_append_userinfo($userinfo);
 }
+$alreadyMember = !empty($defaults['account_setup_url']) ? $defaults['account_setup_url'] : $alreadyMember = 'pbsoauth/alreadymember/';
 
 get_header();
 ?>
@@ -69,8 +70,8 @@ $station_nice_name Passport is a benefit for eligible members of $station_nice_n
 	echo "<li class='service-login-link activate'><a href='$active_url' class='passport-button'><span class='logo-button'>&nbsp;</span>Activate Account</a></li>";
 	if (!empty($join_url)) { 
 		
-		//echo "<li class='service-section-label'>I'm a member <strong>without</strong> an activation code</li>";
-		//echo "<li class='service-login-link accountsetup'><a href='". site_url('pbsoauth/alreadymember', 'https') ."' class='passport-button'>Request Account Setup</a></li>";
+		echo "<li class='service-section-label'>I'm a member <strong>without</strong> an activation code</li>";
+		echo "<li class='service-login-link accountsetup'><a href='". $alreadyMember ."' class='passport-button'>Request Account Setup</a></li>";
 	 	
 		echo "<li class='service-section-label'>Not a Member?</li>";
 		echo "<li class='service-login-link becomemember'><a href='$join_url' class='passport-button gray'>Become a Member</a></li>";
