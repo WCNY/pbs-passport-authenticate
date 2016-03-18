@@ -68,6 +68,9 @@ class PBS_Passport_Authenticate {
     if ( get_query_var('pbsoauth')=='userinfo' )  {
       $template = trailingslashit($this->dir) . 'templates/userinfo.php';
     }
+    if ( get_query_var('pbsoauth')=='alreadymember' )  {
+      $template = trailingslashit($this->dir) . 'templates/alreadymember.php';
+    }
     return $template;
   }
 
