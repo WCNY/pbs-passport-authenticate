@@ -96,22 +96,25 @@ $alreadyMember = !empty($defaults['account_setup_url']) ? $defaults['account_set
   </form>
   <?php
   if (!empty($return['errors'])){
-    echo "<h3 class='error'>" . $return['errors'] . "</h3>";
+    echo "<h3 class='error'><em>" . $return['errors'] . "</em></h3>";
   }
   ?>
-</div>  
+</div> 
+
+<div class="column">
+  <p class="passport-small">By activating, I accept that PBS and WCNY may share my viewing history with each other and their service providers (for purposes such as troubleshooting, understanding viewer preferences, etc.).<br/>Please see our <a href="<?php echo $defaults['privacy-policy']; ?>" target="_blank" >Privacy Policy</a> and <a href="<?php echo $defaults['terms-of-service']; ?>" target="_blank" >Terms of Use</a> for more information.</p>
+</div> 
 
 <div class="column">
   <h2>How do I find my activation code?</h2>
-
-  <p>If you are an active member of <?php echo $station_nice_name; ?> ($60+ annual, or $5 monthly), look for an email from "<?php echo $station_nice_name; ?> Passport" which contains your activation code.</p>  
+  <p>If you are an active qualifying* member of <?php echo $station_nice_name; ?>, look for an email from "<?php echo $station_nice_name; ?> Member Services" which contains your activation code.</p>  
   <h3>Don't have an activation code?</h3>
   <p>If you don't have an email from us, <a href="<?php echo $alreadyMember; ?>">please click here</a>.</p>
   <h3>I already activated.</h3>
   <p>If you have already activated your <?php echo $station_nice_name; ?> Passport account, <a href="<?php echo site_url('pbsoauth/loginform/', 'https'); ?>" >click here to sign in</a>.</p>
   <h3>Not a member?</h3>
   <p>If you are not a current member, <a href="<?php echo $defaults['join_url']; ?>">click here to join.</a></p>
-  <p>&nbsp;</p>
+  <p class='clarify'>* To qualify for these benefits, member gifts must meet a minimum dollar threshold due to PBS's contractual agreements with content producers and distributors. Auction memberships, and discounted senior/student memberships do not qualify. Also, due to international rights limitations, qualifying Canadian members will be able to access WCNY MemberSite but will not have access to Passport content from IP addresses in Canada.</p>
 </div>
 <p class='passport-help-text'><i class='fa fa-info-circle'></i> <?php echo $defaults['help_text']; ?></p>
 </div>
