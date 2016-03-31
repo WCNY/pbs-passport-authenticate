@@ -61,23 +61,10 @@ if ($membership_id){
     <div class="column-wide">
     <h2>Welcome ' . $mvaultinfo['first_name'] . ' ' . $mvaultinfo['last_name'] . '</h2>
     <p>You\'re almost done activating your new benefits*. After this initial setup, you will be able to log in to WCNY MemberSite and Passport from the homepage.</p>';
-	// opt-in challenge
-  echo '
-    <div class="passport-optin-challenge">
-    <ul>
-    <li class="boxed">
-    <h3>1.  Confirm Your Permission:</h3>
-		<p class="passport-optin-checkbox"><span><input type="checkbox" id="pbsoauth_optin" name="pbsoauth_optin" value="true" checked/></span> <label for="pbsoauth_optin">I accept that PBS and WCNY may share my viewing history with each other and their service providers (for purposes such as troubleshooting, understanding viewer preferences, etc.).</label></p>
-		<p class="passport-optin-button"><button id="passport-confirm-optin" class="passport-button">Confirm</button><div class="passport-optin-error"></div></p>
-		<p class="passport-small">If you do not agree to allow PBS and ' . $defaults['station_nice_name'] . ' to share your viewing history with each other and their service providers, please stop and <a href="'. $defaults['contact-us'] . '" target="_blank">contact us</a>.<br/>Please see our <a href="' . $defaults['privacy-policy'] . '" target="_blank" >Privacy Policy</a> and <a href="' . $defaults['terms-of-service'] . '" target="_blank" >Terms of Use</a> for more information.</p>
-    </li>
-    </ul>
-    </div>';
-	// end opt in challenge
     echo '
     <ul>
     <li class="boxed">
-    <h3>2.  Choose Your Login & Authorize</h3> 
+    <h3>Choose Your Login & Authorize</h3> 
     <p>Please choose a login method below. You and other members of your household will use this method to login to WCNY.</p>
     <p>After logging in, you will be asked to authorize/share the connection with WCNY to complete the setup process.</p>
     <p class="desc"><strong>Note:</strong> Choosing Email/PBS for your login will link to your existing PBS account or allow you to set up a new PBS account. This will also give you access to a host of PBS content!</p>
