@@ -72,7 +72,7 @@ if ($activation_token){
     }
   }
 }
-$alreadyMember = !empty($defaults['account_setup_url']) ? $defaults['account_setup_url'] : $alreadyMember = 'pbsoauth/alreadymember/';
+$alreadyMember = !empty($defaults['account_setup_url']) ? $defaults['account_setup_url'] : $alreadyMember = site_url('pbsoauth/alreadymember/', 'https');
 ?>
 <div class="container p_gateway">
 <div class="body-fade">
@@ -108,11 +108,11 @@ $alreadyMember = !empty($defaults['account_setup_url']) ? $defaults['account_set
 <div class="column">
   <h2>How do I find my activation code?</h2>
   <p>If you are an active qualifying* member of <?php echo $station_nice_name; ?>, look for an email from "<?php echo $station_nice_name; ?> Member Services" which contains your activation code.</p>  
-  <h3>Don't have an activation code?</h3>
-  <p>If you don't have an email from us, <a href="<?php echo $alreadyMember; ?>">please click here</a>.</p>
+  <h3>I'm a member without an activation code?</h3>
+  <p>If you are a qualifying* member, and don't have an email from us, <a href="<?php echo $alreadyMember; ?>">please click here</a>.</p>
   <h3>I already activated.</h3>
   <p>If you have already activated your <?php echo $station_nice_name; ?> Passport account, <a href="<?php echo site_url('pbsoauth/loginform/', 'https'); ?>" >click here to sign in</a>.</p>
-  <h3>Not a member?</h3>
+  <h3>I'm not a member?</h3>
   <p>If you are not a current member, <a href="<?php echo $defaults['join_url']; ?>">click here to join.</a></p>
   <p class='clarify'>* To qualify for these benefits, member gifts must meet a minimum dollar threshold due to PBS's contractual agreements with content producers and distributors. Auction memberships, and discounted senior/student memberships do not qualify. Also, due to international rights limitations, qualifying Canadian members will be able to access WCNY MemberSite but will not have access to Passport content from IP addresses in Canada.</p>
 </div>
