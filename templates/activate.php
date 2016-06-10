@@ -72,7 +72,7 @@ if ($activation_token){
     }
   }
 }
-$alreadyMember = !empty($defaults['account_setup_url']) ? $defaults['account_setup_url'] : $alreadyMember = site_url('pbsoauth/alreadymember/', 'https');
+$alreadyaMember = !empty($defaults['account_setup_url']) ? $defaults['account_setup_url'] : $alreadyaMember = site_url('pbsoauth/alreadyamember/', 'https');
 ?>
 <div class="container p_gateway">
 <div class="body-fade">
@@ -109,7 +109,7 @@ $alreadyMember = !empty($defaults['account_setup_url']) ? $defaults['account_set
   <h2>How do I find my activation code?</h2>
   <p>If you are an active qualifying* member of <?php echo $station_nice_name; ?>, look for an email from "<?php echo $station_nice_name; ?> Member Services" which contains your activation code.</p>  
   <h3>I'm a member without an activation code?</h3>
-  <p>If you are a qualifying* member, and don't have an email from us, <a href="<?php echo $alreadyMember; ?>">please click here</a>.</p>
+  <p>If you are a qualifying* member, and don't have an email from us, <a href="<?php echo $alreadyaMember; ?>">please click here</a>.</p>
   <h3>I already activated.</h3>
   <p>If you have already activated your <?php echo $station_nice_name; ?> Passport account, <a href="<?php echo site_url('pbsoauth/loginform/', 'https'); ?>" >click here to sign in</a>.</p>
   <h3>I'm not a member?</h3>

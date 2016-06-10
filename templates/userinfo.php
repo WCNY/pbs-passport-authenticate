@@ -21,8 +21,8 @@ if (isset ($mvaultinfo["membership_id"])) {
   $userinfo["membership_info"] = $mvaultinfo;
   $userinfo = $laas_client->validate_and_append_userinfo($userinfo);
 }
-$alreadyMember = !empty($defaults['account_setup_url']) ? $defaults['account_setup_url'] : $alreadyMember = 'pbsoauth/alreadymember/';
-$alreadyMemberBtn = !empty($defaults['account_setup_btn']) ? $defaults['account_setup_btn'] : $alreadyMember = 'Request Account Setup';
+$alreadyaMember = !empty($defaults['account_setup_url']) ? $defaults['account_setup_url'] : '/pbsoauth/alreadyamember/';
+$alreadyaMemberBtn = !empty($defaults['account_setup_btn']) ? $defaults['account_setup_btn'] : 'Lookup My Code';
 
 get_header();
 ?>
@@ -65,7 +65,7 @@ elseif ( empty($userinfo['membership_info']['offer']) && $userinfo['membership_i
 	if (!empty($join_url)) { 
 		
 		echo "<li class='service-section-label'>I'm a member <strong>without</strong> an activation code</li>";
-		echo "<li class='service-login-link accountsetup'><a href='". $alreadyMember ."' class='passport-button'>". $alreadyMemberBtn . "</a></li>";
+		echo "<li class='service-login-link accountsetup'><a href='". $alreadyaMember ."' class='passport-button'>". $alreadyaMemberBtn . "</a></li>";
 	 	
 		echo "<li class='service-section-label'>Not a Member?</li>";
 		echo "<li class='service-login-link becomemember'><a href='$join_url' class='passport-button gray'>Become a Member</a></li>";

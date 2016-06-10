@@ -96,8 +96,6 @@ class PBS_MVault_Client {
     return $returnobj['objects'];
   }
 
-
-
   public function activate($membership_id, $uid) {
     $return = array();
     // first check if this membership is already activated
@@ -119,6 +117,55 @@ class PBS_MVault_Client {
     return $this->get_membership($membership_id);
   }
 
+  public function get_token_by_id($membership_id, $last_name) {
+    // Track requests/session
+    if(isset($_COOKIE['tokreq']) == 1) {
+        console(intval($_COOKIE['tokreq']));
+      $cookie = ++$_COOKIE['tokreq'];
+    } else {
+      $cookie = 1;
+    }
+    setcookie('tokreq', $cookie, strtotime("+1 hour"), "/", $this->domain, false, false);
+    // limit to 5 requests/hr
+    if(intval($_COOKIE['tokreq']) < 6) {
+      $return = array();
+      $return['locked'] = false;
+      //clean data
+      $membership_id = strip_tags(trim($membership_id));
+      $last_name = strip_tags(trim(strtolower($last_name)));
+      // check if membership exists in mvault
+      $membercheck = $this->get_membership($membership_id);
+        //print_r($membercheck);
+      // check for an error result
+      if(isset($membercheck['errors'])){
+        $return['errors'] = 'Membership information not found. Please verify your information and try again.';
+        return $return;
+      } else {
+        if(isset($membercheck['pbs_profile']['email'])){ // Previously Activated Account
+          $return['errors'] = 'Membership is already activated, please <a href="/pbsoauth/loginform/">sign in</a>.';
+          $return['locked'] = true;
+          return $return;
+        } else if (isset($membercheck['last_name'])) { // Validate by Last Name
+          $mvault_last = strtolower($membercheck['last_name']);
+          // validate by last name
+          if ($last_name == $mvault_last) {
+            // validated return activation token
+            $return['token'] = $membercheck['token'];
+            return $return;
+          } else {
+            $return['errors'] = 'Membership information not found. Please verify your information and try again.';
+            return $return;
+          }
+        } else {
+          return $return['errors'] = 'No last name';
+        }
+      }
+    } else {
+      $return['errors'] = 'Please contact our membership department, or request your activation code below.';
+      $return['locked'] = true;
+      return $return;
+    }
+  }
 
   public function lookup_activation_token($token) {
     $return = array();
@@ -306,6 +353,7 @@ class PBS_MVault_Client {
     }
     return $return;
   }
+
 
 }
 
