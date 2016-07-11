@@ -16,6 +16,7 @@ remove_all_actions('wp_footer',1);
 remove_all_actions('wp_header',1);
 
 $defaults = get_option('pbs_passport_authenticate');
+//console($defaults);
 
 $passport = new PBS_Passport_Authenticate(dirname(__FILE__));
 
@@ -31,18 +32,14 @@ if (isset($_GET["state"])){
 // $jwt = $passport->jwt_decode($state);
 $membership_id = (!empty($state) ? $state : false);
 
-/*echo "membership id:<br/>";
-var_dump($membership_id);
-echo "<br/>";*/
+// console("membership id:");
+// console($membership_id);
+//echo "<br/>"; 
 
 $rememberme = false;
 if (!empty($_COOKIE["pbsoauth_rememberme"])) {
   $rememberme = $_COOKIE["pbsoauth_rememberme"];
 }
-
-/*echo "rememberme: ";
-var_dump($rememberme);
-echo "<br/>";*/
 
 // nonce is going to be in the jwt
 $nonce = false;
@@ -55,9 +52,8 @@ if (isset($_GET["code"])){
   $code = $_GET["code"];
   $userinfo = $laas_client->authenticate($code, $rememberme, $nonce);
 }
-/*echo "userinfo:<br/><pre>";
-var_dump($userinfo);
-echo "</pre><br/>";*/
+// console("userinfo:");
+// console($userinfo);
 
 
 // now we either have userinfo or null.
@@ -93,6 +89,8 @@ if($defaults['after_login_url']) {
 }
 
 $login_status = $laas_client->check_pbs_login();
+// console("login_status");
+// console($login_status);
 
 wp_redirect($login_referrer);
 exit();
