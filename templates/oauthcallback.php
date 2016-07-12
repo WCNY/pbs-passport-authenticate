@@ -32,9 +32,8 @@ if (isset($_GET["state"])){
 // $jwt = $passport->jwt_decode($state);
 $membership_id = (!empty($state) ? $state : false);
 
-// console("membership id:");
-// console($membership_id);
-//echo "<br/>"; 
+//console("membership id:");
+//console($membership_id);
 
 $rememberme = false;
 if (!empty($_COOKIE["pbsoauth_rememberme"])) {
@@ -52,8 +51,8 @@ if (isset($_GET["code"])){
   $code = $_GET["code"];
   $userinfo = $laas_client->authenticate($code, $rememberme, $nonce);
 }
-// console("userinfo:");
-// console($userinfo);
+//console("userinfo:");
+//console($userinfo);
 
 
 // now we either have userinfo or null.
@@ -89,8 +88,8 @@ if($defaults['after_login_url']) {
 }
 
 $login_status = $laas_client->check_pbs_login();
-// console("login_status");
-// console($login_status);
+//console("login_status");
+//console($login_status);
 
 wp_redirect($login_referrer);
 exit();
